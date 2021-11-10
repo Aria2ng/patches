@@ -1,0 +1,55 @@
+From 08f2534825f85ad70dd5f19a6e770ec9cb663462 Mon Sep 17 00:00:00 2001
+From: urain39 <urain39@qq.com>
+Date: Wed, 10 Nov 2021 18:38:39 +0800
+Subject: [PATCH 3/3] allow download InfoHash directly
+
+---
+ src/scripts/controllers/new.js              | 8 +++++---
+ src/scripts/services/ariaNgCommonService.js | 6 ++++--
+ 2 files changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/src/scripts/controllers/new.js b/src/scripts/controllers/new.js
+index 25fce98..7a242c2 100644
+--- a/src/scripts/controllers/new.js
++++ b/src/scripts/controllers/new.js
+@@ -18,13 +18,15 @@
+             var options = angular.copy($scope.context.options);
+             var tasks = [];
+ 
+-            for (var i = 0; i < urls.length; i++) {
+-                if (urls[i] === '' || urls[i].trim() === '') {
++            for (var i = 0, url = ''; i < urls.length; i++) {
++                url = urls[i].trim();
++
++                if (url === '') {
+                     continue;
+                 }
+ 
+                 tasks.push({
+-                    urls: [urls[i].trim()],
++                    urls: [url],
+                     options: options
+                 });
+             }
+diff --git a/src/scripts/services/ariaNgCommonService.js b/src/scripts/services/ariaNgCommonService.js
+index 1422649..646dc1e 100644
+--- a/src/scripts/services/ariaNgCommonService.js
++++ b/src/scripts/services/ariaNgCommonService.js
+@@ -79,10 +79,12 @@
+                 for (var i = 0; i < lines.length; i++) {
+                     var line = lines[i];
+ 
+-                    if (line.match(/^(http|https|ftp|sftp):\/\/.+$/)) {
++                    if (/^(?:http|https|ftp|sftp):\/\/.+$/.test(line)) {
+                         result.push(line);
+-                    } else if (line.match(/^magnet:\?.+$/)) {
++                    } else if (/^magnet:\?.+$/.test(line)) {
+                         result.push(line);
++                    } else if (/^(?:[0-9a-f]{40}|[2-7a-z]{32})$/i.test(line)) {
++                        result.push('magnet:?xt=urn:btih:' + line);
+                     }
+                 }
+ 
+-- 
+2.33.1
+

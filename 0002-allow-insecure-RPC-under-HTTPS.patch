@@ -1,0 +1,30 @@
+From 9c81205b57d8ec7fab0ece11165e1fdfc8fa5ec9 Mon Sep 17 00:00:00 2001
+From: urain39 <urain39@qq.com>
+Date: Wed, 10 Nov 2021 18:37:32 +0800
+Subject: [PATCH 2/3] allow insecure RPC under HTTPS
+
+---
+ src/scripts/services/ariaNgSettingService.js | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/scripts/services/ariaNgSettingService.js b/src/scripts/services/ariaNgSettingService.js
+index 35800d8..02c0cce 100644
+--- a/src/scripts/services/ariaNgSettingService.js
++++ b/src/scripts/services/ariaNgSettingService.js
+@@ -54,9 +54,11 @@
+         };
+ 
+         var isInsecureProtocolDisabled = function () {
+-            var protocol = $location.protocol();
++            //var protocol = $location.protocol();
++            //
++            //return protocol === 'https';
+ 
+-            return protocol === 'https';
++            return false;
+         };
+ 
+         var getLanguageNameFromAlias = function (alias) {
+-- 
+2.33.1
+
